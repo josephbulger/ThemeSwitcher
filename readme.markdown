@@ -9,6 +9,8 @@ What I've done that makes my widget unique is a couple of things.
    [Wijmo's Themes](http://wijmo.com/widgets/theming/). I'm just using Wijmo as an example because I, myself, am not a designer,
    and I needed a reference for how to do this.  As such, I'm not afiliated with Wijmo in any way.
 
+3. You can easily exclude themes by passing in an array of the names which you want to exclude.
+
 The Examples
 ----------------
 
