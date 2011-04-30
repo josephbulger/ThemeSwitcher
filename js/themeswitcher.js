@@ -41,6 +41,8 @@ $.fn.themeswitcher = function (settings) {
             '{ "name": "Swanky Purse", "preview": "http://static.jquery.com/ui/themeroller/images/themeGallery/theme_30_swanky_purse.png", "css": "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/swanky-purse/jquery-ui.css"}]}')
     }, settings);
 
+	options.defaultThemes = filterExcludedThemes(options.defaultThemes.themes, options.excludedThemes);
+	
     //theme option template
     $.template('themeTemplate', '<li><a href="${css}"><img src="${preview}" alt="${name}" title="${name}" /><span class="themeName">${name}</span></a></li>');
 
@@ -49,7 +51,7 @@ $.fn.themeswitcher = function (settings) {
     var switcherpane = $('<div class="jquery-ui-themeswitcher"><div id="themeGallery">	<ul></ul></div></div>');
 
     $.tmpl('themeTemplate', options.includedThemes).appendTo($(switcherpane).find('#themeGallery ul'));
-    $.tmpl('themeTemplate', options.defaultThemes.themes).appendTo($(switcherpane).find('#themeGallery ul'));    
+    $.tmpl('themeTemplate', options.defaultThemes).appendTo($(switcherpane).find('#themeGallery ul'));    
 
     switcherpane.find('div').removeAttr('id');
 
@@ -96,6 +98,16 @@ $.fn.themeswitcher = function (settings) {
         }
     }
 
+	function filterExcludedThemes(defaultThemes, excludedThemes) {
+		$(excludedThemes).each(function(i){
+			var excludedTheme = this;
+			defaultThemes = $.grep(defaultThemes, function(j){
+				return j.name != excludedTheme;
+			});
+		});
+		return defaultThemes;
+	}
+	
     /* Inline CSS 
     ---------------------------------------------------------------------*/
     var button_default = {

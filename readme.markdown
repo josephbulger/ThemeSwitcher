@@ -17,6 +17,9 @@ The Examples
 - However, if you would like to add additional themes, other than the ones provided by jQuery UI,
   you can very easily add them, and a good example would be found in the addingcustomthemes.htm file.
   
+- What if you don't want one of the themes that comes from jQuery UI?  You can optionally exclude any 
+  of the default themes, and there's an example of how to do that in the excludethemes.htm file.
+  
 Dependencies
 ----------------
 
@@ -26,8 +29,6 @@ Dependencies
 
 Roadmap
 ----------------
-
-- I want to be able to exclude certain themes that are provided by jQuery UI from the drop down
 
 - I want to be able to actually associate other theme files to the jQuery UI theme files.  The
   best way I can describe this would be as an example.  Let's say you have a site and you are using
