@@ -23,3 +23,18 @@ Dependencies
 - [jQuery UI](http://jqueryui.com)
 
 - [jQuery Templates](http://api.jquery.com/category/plugins/templates/)
+
+Roadmap
+----------------
+
+- I want to be able to exclude certain themes that are provided by jQuery UI from the drop down
+
+- I want to be able to actually associate other theme files to the jQuery UI theme files.  The
+  best way I can describe this would be as an example.  Let's say you have a site and you are using
+  jQuery UI elements all throughout your site, but you're site has a certain color scheme / look and feel
+  that is outside the realm of jQuery UI.  It would be nice if I could tell a designer to build a set of
+  themes for my site, but that are all associated with the various jQuery UI themes that I am using (like
+  say for instance UI Lightness, UI Darkness, Redmond, and Le Frog. Once the designer has finished his designs
+  for each various theme, I would want to be able to associate those files with their respective themes
+  in the theme switcher, so when someone picks a different theme, not only will it switch out the 
+  jQuery UI theme, but also the underlying site theme.
