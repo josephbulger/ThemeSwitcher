@@ -76,10 +76,10 @@ $.fn.themeswitcher = function (settings) {
     var button = $('<a href="#" class="jquery-ui-themeswitcher-trigger"><span class="jquery-ui-themeswitcher-icon"></span><span class="jquery-ui-themeswitcher-title">' + options.initialText + '</span></a>');
     var switcherpane = $('<div class="jquery-ui-themeswitcher"><div id="themeGallery">	<ul></ul></div></div>');
 
-    if (options.includedThemes == undefined || options.includedThemes.length > 0)
+    if (options.includedThemes === undefined || options.includedThemes.length > 0)
         $.tmpl('themeTemplate', options.includedThemes).appendTo($(switcherpane).find('#themeGallery ul'));
     
-    if (options.defaultThemes  == undefined || options.defaultThemes.length > 0)
+    if (options.defaultThemes  === undefined || options.defaultThemes.length > 0)
         $.tmpl('themeTemplate', options.defaultThemes).appendTo($(switcherpane).find('#themeGallery ul'));    
 
     switcherpane.find('div').removeAttr('id');
@@ -100,8 +100,8 @@ $.fn.themeswitcher = function (settings) {
 	);
 
     //show/hide panel functions
-    $.fn.spShow = function () { $(this).css({ top: button.offset().top + options.buttonHeight + 6, left: button.offset().left }).slideDown(50); button.css(button_active); options.onOpen(); }
-    $.fn.spHide = function () { $(this).slideUp(50, function () { options.onClose(); }); button.css(button_default); }
+    $.fn.spShow = function () { $(this).css({ top: button.offset().top + options.buttonHeight + 6, left: button.offset().left }).slideDown(50); button.css(button_active); options.onOpen(); };
+    $.fn.spHide = function () { $(this).slideUp(50, function () { options.onClose(); }); button.css(button_default); };
 
 
     /* Theme Loading
@@ -121,7 +121,7 @@ $.fn.themeswitcher = function (settings) {
     function updateCSS(locStr, type) {
         $("link.ui-theme." + type +":first").remove();
         
-        if (locStr == undefined || locStr.length == 0)
+        if (locStr === undefined || locStr.length === 0)
             return;
         var cssLink = $('<link href="' + locStr + '" type="text/css" rel="Stylesheet" class="ui-theme ' + type + '" />');
         
@@ -300,7 +300,7 @@ jQuery.cookie = function (name, value, options) {
         document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
     } else { // only name given, get cookie
         var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
+        if (document.cookie && document.cookie !== '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
