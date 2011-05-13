@@ -1,4 +1,4 @@
-﻿/* jQuery plugin themeswitcher
+/* jQuery plugin themeswitcher
 ---------------------------------------------------------------------*/
 $.fn.themeswitcher = function (settings) {
     var options = jQuery.extend({
@@ -50,8 +50,11 @@ $.fn.themeswitcher = function (settings) {
     var button = $('<a href="#" class="jquery-ui-themeswitcher-trigger"><span class="jquery-ui-themeswitcher-icon"></span><span class="jquery-ui-themeswitcher-title">' + options.initialText + '</span></a>');
     var switcherpane = $('<div class="jquery-ui-themeswitcher"><div id="themeGallery">	<ul></ul></div></div>');
 
-    $.tmpl('themeTemplate', options.includedThemes).appendTo($(switcherpane).find('#themeGallery ul'));
-    $.tmpl('themeTemplate', options.defaultThemes).appendTo($(switcherpane).find('#themeGallery ul'));    
+    if (options.includedThemes.length > 0)
+        $.tmpl('themeTemplate', options.includedThemes).appendTo($(switcherpane).find('#themeGallery ul'));
+    
+    if (options.defaultThemes.length > 0)
+        $.tmpl('themeTemplate', options.defaultThemes).appendTo($(switcherpane).find('#themeGallery ul'));    
 
     switcherpane.find('div').removeAttr('id');
 
