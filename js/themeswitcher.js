@@ -15,6 +15,7 @@ $.fn.themeswitcher = function (settings) {
         onSelect: function () { },
         includedThemes: { },
         excludedThemes: { },
+        associatedThemes: { },
         defaultThemes: $.parseJSON('{"themes": [{ "name": "UI Lightness", "preview": "http://static.jquery.com/ui/themeroller/images/themeGallery/theme_30_ui_light.png", "css": "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css"},' +
             '{ "name": "UI Darkness", "preview": "http://static.jquery.com/ui/themeroller/images/themeGallery/theme_30_ui_dark.png", "css": "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-darkness/jquery-ui.css"},' +
             '{ "name": "Smoothness", "preview": "http://static.jquery.com/ui/themeroller/images/themeGallery/theme_30_smoothness.png", "css": "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"},' +
@@ -41,19 +42,44 @@ $.fn.themeswitcher = function (settings) {
             '{ "name": "Swanky Purse", "preview": "http://static.jquery.com/ui/themeroller/images/themeGallery/theme_30_swanky_purse.png", "css": "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/swanky-purse/jquery-ui.css"}]}')
     }, settings);
 
+    function associateThemes(originalThemes, associatedThemes) {
+        $(associatedThemes).each(function(i){
+            var associatedTheme = this;
+            $(originalThemes).filter(function(j){
+                return this.name == associatedTheme.name;
+			}).each(function(k) {
+                this.associated = associatedTheme.css;
+            });
+		});
+        return originalThemes;
+    }
+    
+	function filterExcludedThemes(defaultThemes, excludedThemes) {
+		$(excludedThemes).each(function(i){
+			var excludedTheme = this;
+			defaultThemes = $.grep(defaultThemes, function(j){
+				return j.name != excludedTheme;
+			});
+		});
+		return defaultThemes;
+	}
+    
 	options.defaultThemes = filterExcludedThemes(options.defaultThemes.themes, options.excludedThemes);
 	
+    options.defaultThemes = associateThemes(options.defaultThemes, options.associatedThemes);
+    options.includedThemes = associateThemes(options.includedThemes, options.associatedThemes);
+        
     //theme option template
-    $.template('themeTemplate', '<li><a href="${css}"><img src="${preview}" alt="${name}" title="${name}" /><span class="themeName">${name}</span></a></li>');
+    $.template('themeTemplate', '<li><a href="${css}" associated="${associated}"><img src="${preview}" alt="${name}" title="${name}" /><span class="themeName">${name}</span></a></li>');
 
     //markup 
     var button = $('<a href="#" class="jquery-ui-themeswitcher-trigger"><span class="jquery-ui-themeswitcher-icon"></span><span class="jquery-ui-themeswitcher-title">' + options.initialText + '</span></a>');
     var switcherpane = $('<div class="jquery-ui-themeswitcher"><div id="themeGallery">	<ul></ul></div></div>');
 
-    if (options.includedThemes.length > 0)
+    if (options.includedThemes == undefined || options.includedThemes.length > 0)
         $.tmpl('themeTemplate', options.includedThemes).appendTo($(switcherpane).find('#themeGallery ul'));
     
-    if (options.defaultThemes.length > 0)
+    if (options.defaultThemes  == undefined || options.defaultThemes.length > 0)
         $.tmpl('themeTemplate', options.defaultThemes).appendTo($(switcherpane).find('#themeGallery ul'));    
 
     switcherpane.find('div').removeAttr('id');
@@ -81,7 +107,8 @@ $.fn.themeswitcher = function (settings) {
     /* Theme Loading
     ---------------------------------------------------------------------*/
     switcherpane.find('a').click(function () {
-        updateCSS($(this).attr('href'));
+        updateCSS($(this).attr('href'), 'main');
+        updateCSS($(this).attr('associated'), 'associated');
         var themeName = $(this).find('span').text();
         button.find('.jquery-ui-themeswitcher-title').text(options.buttonPreText + themeName);
         $.cookie(options.cookieName, themeName);
@@ -91,25 +118,15 @@ $.fn.themeswitcher = function (settings) {
     });
 
     //function to append a new theme stylesheet with the new style changes
-    function updateCSS(locStr) {
-        var cssLink = $('<link href="' + locStr + '" type="text/css" rel="Stylesheet" class="ui-theme" />');
-        $("head").append(cssLink);
-
-
-        if ($("link.ui-theme").size() > 3) {
-            $("link.ui-theme:first").remove();
-        }
-    }
-
-	function filterExcludedThemes(defaultThemes, excludedThemes) {
-		$(excludedThemes).each(function(i){
-			var excludedTheme = this;
-			defaultThemes = $.grep(defaultThemes, function(j){
-				return j.name != excludedTheme;
-			});
-		});
-		return defaultThemes;
-	}
+    function updateCSS(locStr, type) {
+        $("link.ui-theme." + type +":first").remove();
+        
+        if (locStr == undefined || locStr.length == 0)
+            return;
+        var cssLink = $('<link href="' + locStr + '" type="text/css" rel="Stylesheet" class="ui-theme ' + type + '" />');
+        
+        $("head").append(cssLink);        
+    }    
 	
     /* Inline CSS 
     ---------------------------------------------------------------------*/
